@@ -1,0 +1,13 @@
+target/
+!target/*.jar
+.git
+.gitignore
+*.md
+.env
+.vscode/
+.idea/
+*.iml
+logs/
+temp/
+.DS_Store
+Thumbs.db

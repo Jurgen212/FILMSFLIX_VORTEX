@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cinema Ticket</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .ticket-container {
+      width: 380px;
+      background: #ffffff;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .ticket-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+    }
+
+    .ticket-header {
+      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      color: white;
+      padding: 24px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .ticket-header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .ticket-header .subtitle {
+      font-size: 12px;
+      opacity: 0.8;
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+
+    .cinema-logo {
+      text-align: center;
+      padding: 20px 0;
+      background: #f8f9fa;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .cinema-logo h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #2c3e50;
+      letter-spacing: 1px;
+    }
+
+    .cinema-logo .tagline {
+      font-size: 12px;
+      color: #6c757d;
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    .ticket-content {
+      padding: 24px 20px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 16px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, #4ecdc4, #45b7d1);
+    }
+
+    .purchase-items {
+      margin-bottom: 24px;
+    }
+
+    .purchase-item {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      border-left: 4px solid #4ecdc4;
+      transition: transform 0.2s ease;
+    }
+
+    .purchase-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .purchase-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .film-title {
+      font-weight: 700;
+      font-size: 18px;
+      color: #2c3e50;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .movie-info {
+      display: grid;
+      gap: 8px;
+    }
+
+    .movie-info p, .user-info p, .purchase-info p {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .movie-info span:first-child,
+    .user-info span:first-child,
+    .purchase-info span:first-child {
+      font-weight: 500;
+      color: #495057;
+      font-size: 13px;
+    }
+
+    .movie-info span:last-child,
+    .user-info span:last-child,
+    .purchase-info span:last-child {
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .user-info, .purchase-info {
+      background: #ffffff;
+      border: 1px solid #e9ecef;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .user-info::before {
+      content: '👤';
+      position: absolute;
+      top: -8px;
+      left: 20px;
+      background: white;
+      padding: 0 8px;
+      font-size: 16px;
+    }
+
+    .purchase-info::before {
+      content: '💳';
+      position: absolute;
+      top: -8px;
+      left: 20px;
+      background: white;
+      padding: 0 8px;
+      font-size: 16px;
+    }
+
+    .total-highlight {
+      background: linear-gradient(135deg, #4ecdc4, #45b7d1);
+      color: white !important;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 700 !important;
+      font-size: 16px !important;
+    }
+
+    .total-highlight span:first-child {
+      color: white !important;
+      font-weight: 600 !important;
+    }
+
+    .barcode-section {
+      border-top: 2px dashed #dee2e6;
+      padding: 24px 20px;
+      text-align: center;
+      background: #f8f9fa;
+    }
+
+    .barcode-title {
+      font-size: 12px;
+      color: #6c757d;
+      margin-bottom: 12px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .barcode-img {
+      height: 60px;
+      background: repeating-linear-gradient(
+              90deg,
+              #2c3e50 0px,
+              #2c3e50 3px,
+              #ffffff 3px,
+              #ffffff 6px
+      );
+      margin: 12px auto;
+      border-radius: 4px;
+      max-width: 280px;
+    }
+
+    .reference-code {
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c3e50;
+      letter-spacing: 2px;
+      margin-top: 8px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: #6c757d;
+      background: #2c3e50;
+      color: white;
+      line-height: 1.5;
+    }
+
+    .footer .warning {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .footer .policy {
+      opacity: 0.8;
+    }
+
+    @media print {
+      body {
+        background: white;
+        font-size: 12px;
+      }
+
+      .ticket-container {
+        box-shadow: none;
+        width: 100%;
+        max-width: 350px;
+      }
+
+      .purchase-item:hover {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .ticket-container {
+        width: 100%;
+        max-width: 350px;
+      }
+
+      .ticket-content {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="ticket-container">
+  <div class="ticket-header">
+    <h1>FilmsFlix</h1>
+    <div class="subtitle">ENTRADA DE CINE</div>
+  </div>
+
+  <div class="cinema-logo">
+    <h2>FILMS MANAGEMENT</h2>
+    <div class="tagline">Premium Cinema Experience</div>
+  </div>
+
+  <div class="ticket-content">
+    <div class="purchase-items">
+      <h3 class="section-title">Películas Adquiridas</h3>
+
+      <div class="purchase-item">
+        <div class="film-title" th:text="${ticket.getFilm().getTitle()}">Título de la Película</div>
+        <div class="movie-info">
+          <p><span>Género:</span> <span th:text="${ticket.getFilm().getFilmGenre()}"></span></p>
+          <p><span>Hora:</span> <span th:text="${ticket.getFunction().getTime()}"></span></p>
+          <p><span>Sala:</span> <span th:text="${ticket.getFunction().getRoom().getName()}"></span></p>
+          <p><span>Cantidad de entradas:</span> <span th:text="${ticket.getQuantity()}"></span></p>
+          <p><span>Precio por entrada:</span> <span th:text="${'$' + ticket.getFunction().getFunctionPrice()}"></span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="user-info">
+      <p><span>Nombre:</span> <span th:text="${user.getName()}">Juan</span></p>
+      <p><span>Apellido:</span> <span th:text="${user.getLastName()}">Pérez</span></p>
+      <p><span>Teléfono:</span> <span th:text="${user.getPhoneNumber()}">+1 234 567 8900</span></p>
+      <p><span>Correo electrónico:</span> <span th:text="${user.getEmail()}">juan@example.com</span></p>
+    </div>
+
+    <div class="purchase-info">
+      <p class="total-highlight"><span>TOTAL:</span> <span th:text="${'$' + String.format('%.2f', ticket.getTotal())}">$36.30</span></p>
+      <p><span>Método de pago:</span> <span th:text="${ticket.getPaymentMethod()}"></span></p>
+    </div>
+  </div>
+
+  <div class="barcode-section">
+    <div class="barcode-title">CÓDIGO DE BARRAS</div>
+    <div class="barcode-img"></div>
+    <div class="reference-code" th:text="${referenceCode}">REF123456789</div>
+  </div>
+
+  <div class="footer">
+    <div class="policy">No se permiten reembolsos</div>
+  </div>
+</div>
+</body>
+</html>

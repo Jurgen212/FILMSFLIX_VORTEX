@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: filmflix-back
+  datasource:
+    url: jdbc:postgresql://localhost:5433/filmflix_db
+    username: postgres
+    password: dbpassword1234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: true
+  mail:
+    protocol: smtp
+    host: smtp.gmail.com
+    port: 587
+    username: jurgensanclemente@gmail.com
+    password: rntq zsad zbqs nlyv
+    from-address: jurgensanclemente@gmail.com
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+#  thymeleaf:
+#    prefix: classpath:/templates/
+#    suffix: .html
+#    encoding: UTF-8
+#    cache: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+firebase:
+  service-account:
+    path: ./firebasekeys.json
+  storage:
+    bucket-name: tesis-15d8f.firebasestorage.app
