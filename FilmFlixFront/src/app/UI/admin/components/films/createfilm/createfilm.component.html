@@ -1,0 +1,64 @@
+<h1>Create film</h1>
+
+<form [formGroup]="contentForm" (ngSubmit)="onSubmit()" style="max-width: 600px; margin: 0 auto;">
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+
+    <div>
+      <label for="title">Title</label><br>
+      <input type="text" id="title" formControlName="title" placeholder="Ex. Fast & Furious 8" style="width: 100%;">
+      <div *ngIf="contentForm.get('title')?.hasError('required')" style="color: red;">This field is required</div>
+    </div>
+
+    <div>
+      <label for="description">Description</label><br>
+      <textarea id="description" formControlName="description" placeholder="Content description" rows="4" style="width: 100%;"></textarea>
+      <div *ngIf="contentForm.get('description')?.hasError('required')" style="color: red;">This field is required</div>
+    </div>
+
+    <div>
+      <label for="genre">Film Genre</label><br>
+      <select id="genre" formControlName="filmGenre" style="width: 100%;">
+        <option *ngFor="let genre of filmGenres" [value]="genre">{{ genre }}</option>
+      </select>
+      <div *ngIf="contentForm.get('filmGenre')?.hasError('required')" style="color: red;">This field is required</div>
+    </div>
+
+    <div>
+      <label for="duration">Duration</label><br>
+      <select id="genre" formControlName="duration" style="width: 100%;">
+        <option *ngFor="let dur of durationsList" [value]="dur">{{ dur }}</option>
+      </select>
+      <div *ngIf="contentForm.get('duration')?.hasError('required')" style="color: red;">This field is required</div>
+    </div>
+
+    <div>
+      <label for="trailerUrl">Trailer</label><br>
+      <input type="text" id="trailerUrl" formControlName="trailerUrl" placeholder="Trailer link" style="width: 100%;">
+      <div *ngIf="contentForm.get('trailerUrl')?.hasError('required')" style="color: red;">This field is required</div>
+    </div>
+
+    <div>
+      <label for="trailerUrl">Select Staff Members</label><br>
+      <select multiple (change)="onMultiSelectChange($event)" size="6" style="width: 100%;">
+        <option *ngFor="let item of staffListFromDb" [value]="item.id" [selected]="selectedStaff.includes(item.id)">
+          {{ item.name }} - {{ item.staffRol }}
+        </option>
+      </select>
+    </div>
+
+    <div>
+      <label for="image">Poster</label><br>
+      <input type="file" (change)="onFileSelected($event)" accept="image/*">
+    </div>
+
+    <div *ngIf="previewUrl">
+      <h3>Preview:</h3>
+      <img [src]="previewUrl" alt="Image preview" width="200">
+    </div>
+
+    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
+      <button type="submit">Create</button>
+      <button type="button" [mat-dialog-close]="false">Cancel</button>
+    </div>
+  </div>
+</form>

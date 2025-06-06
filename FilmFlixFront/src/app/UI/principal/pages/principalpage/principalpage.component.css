@@ -1,0 +1,43 @@
+.fullscreen-container {
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .overlay {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3); /* Overlay opcional para mejor legibilidad */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Remover overlay si no es necesario */
+    .no-overlay {
+      background-color: transparent;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .fullscreen-container {
+        background-attachment: scroll; /* Mejor performance en móviles */
+      }
+
+      .overlay {
+        padding: 15px;
+      }
+    }

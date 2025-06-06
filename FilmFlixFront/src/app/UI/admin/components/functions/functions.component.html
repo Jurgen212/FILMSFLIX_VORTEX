@@ -1,0 +1,73 @@
+<div class="container" *ngIf="rooms.length > 0 && peliculas.length > 0">
+      <h2>Schedule</h2>
+
+      <div class="table-container">
+        <table class="rooms-table">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Nombre de Sala</th>
+              <th *ngFor="let horario of horarios">{{ horario.nombre }}</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let room of rooms; trackBy: trackByRoom" class="room-row">
+              <td>
+                <img
+                  [src]="room.imageUrl"
+                  [alt]="room.name"
+                  class="room-imagen"
+                  (error)="onImageError($event)"
+                />
+              </td>
+              <td class="room-nombre">{{ room.name }}</td>
+
+              <!-- Columnas de horarios -->
+              <td *ngFor="let horario of horarios" class="horario-cell">
+                <!-- Si ya existe una función asignada, mostrar la película -->
+                <div *ngIf="getFuncionExistente(room.id, horario.valor)" class="funcion-existente">
+                  <div class="pelicula-asignada">
+                    <span class="pelicula-nombre">
+                      {{ getFuncionExistente(room.id, horario.valor)?.film?.title }}
+                    </span>
+                    <span class="badge-asignada">Asignada</span>
+                  </div>
+                </div>
+
+                <!-- Si no existe función, mostrar select -->
+                <div *ngIf="!getFuncionExistente(room.id, horario.valor)" class="select-container">
+                  <select
+                    [value]="room.peliculasAsignadas[horario.valor]?.id || ''"
+                    (change)="onPeliculaSeleccionada(room, horario.valor, $event)"
+                    class="pelicula-select"
+                  >
+                    <option value="">Seleccionar película...</option>
+                    <option
+                      *ngFor="let pelicula of peliculas; trackBy: trackByPelicula"
+                      [value]="pelicula.id"
+                    >
+                      {{ pelicula.title }}
+                    </option>
+                  </select>
+                </div>
+              </td>
+
+              <td>
+                <button
+                  class="btn-guardar"
+                  [disabled]="!tieneAsignacionesPendientes(room) || isGuardando"
+                  (click)="guardarAsignaciones(room)"
+                >
+                  <span *ngIf="isGuardando && roomGuardandoId === room.id" class="loading">
+                    Guardando...
+                  </span>
+                  <span *ngIf="!(isGuardando && roomGuardandoId === room.id)">
+                    Guardar
+                  </span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>

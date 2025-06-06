@@ -1,0 +1,161 @@
+<div class="fullscreen-container" [style.background-image]="'url(' + imageUrl + ')'">
+      <div class="overlay" *ngIf="movieData">
+        <h1 class="title">{{ movieData.title }}</h1>
+      </div>
+
+      <div class="movie-detail-card">
+        <div class="card-content" *ngIf="movieData">
+
+          <!-- Header de la película -->
+          <div class="movie-header">
+            <div class="poster-section">
+              <img [src]="movieData.posterUrl" [alt]="movieData.title" class="movie-poster">
+              <div class="movie-basic-info">
+                <h2 class="movie-title">{{ movieData.title }}</h2>
+                <div class="movie-meta">
+                  <span class="genre">{{ movieData.filmGenre }}</span>
+                  <span class="duration">{{ movieData.duration }}</span>
+                  <span class="status" [class.enabled]="movieData.enabled" [class.disabled]="!movieData.enabled">
+                    {{ movieData.enabled ? 'Disponible' : 'No disponible' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Descripción -->
+          <div class="movie-section">
+            <h3>Resume</h3>
+            <p class="description">{{ movieData.description }}</p>
+          </div>
+
+          <!-- Trailer -->
+          <div class="movie-section" *ngIf="trailerEmbedUrl">
+            <h3>Tráiler</h3>
+            <div class="trailer-container">
+              <iframe
+                [src]="trailerEmbedUrl"
+                frameborder="0"
+                allowfullscreen
+                class="trailer-iframe">
+              </iframe>
+            </div>
+          </div>
+
+          <!-- Staff -->
+          <div class="movie-section" *ngIf="movieData.filmStaff && movieData.filmStaff.length > 0">
+            <h3>Cast</h3>
+            <div class="staff-grid">
+              <div class="staff-member" *ngFor="let staff of movieData.filmStaff">
+                <div class="staff-info">
+                  <h4 class="staff-name">{{ staff.name }}</h4>
+                  <p class="staff-role">{{ staff.staffRol }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Funciones disponibles -->
+          <div class="movie-section" *ngIf="functions && functions.length > 0">
+            <h3>Available Schedules</h3>
+            <div class="functions-grid">
+              <div
+                class="function-card"
+                *ngFor="let func of functions"
+                [class.disabled]="!func.enabled"
+                (click)="onFunctionClick(func)">
+
+                <div class="room-image">
+                  <img [src]="func.room.imageUrl" [alt]="func.room.name" (error)="onRoomImageError($event)">
+                </div>
+
+                <div class="function-info">
+                  <h4 class="room-name">{{ func.room.name }}</h4>
+                  <p class="function-time">{{ formatTime(func.time) }}</p>
+                  <p class="function-price">${{ func.functionPrice | number:'1.0-0' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="movie-section" *ngIf="!functions || functions.length === 0">
+            <h3>Horarios Disponibles</h3>
+            <p class="no-functions">There are no available features for this film.</p>
+          </div>
+
+
+      <div class="movie-section">
+        <div class="movie-section" *ngIf="isUserLoggedIn() && functions && functions.length > 0">
+        <div class="purchase-form">
+          <h3 class="form-title">Buy tickets</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Number of Tickets:</label>
+              <input
+                type="number"
+                class="form-input"
+                [(ngModel)]="ticketQuantity"
+                (ngModelChange)="calculateTotal()"
+                min="1"
+                max="10"
+                placeholder="1">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Select Function:</label>
+              <select
+                class="form-select"
+                [(ngModel)]="selectedFunction"
+                (ngModelChange)="calculateTotal()">
+                <option value="">Select a function</option>
+                <option
+                  *ngFor="let func of functions"
+                  [value]="func.id"
+                  [disabled]="!func.enabled">
+                  {{ func.room.name }} - {{ formatTime(func.time) }} - ${{ func.functionPrice }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label class="form-label">Method of Payment:</label>
+              <select
+                class="form-select"
+                [(ngModel)]="selectedPaymentMethod">
+                <option value="">Select payment method</option>
+                <option
+                  *ngFor="let method of paymentMethods"
+                  [value]="method.id">
+                  {{ method.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="total-price" *ngIf="totalPrice > 0">
+            Total Payable ${{ totalPrice | number:'1.0-0' }}
+          </div>
+
+          <button
+            class="purchase-button"
+            (click)="purchaseTickets()"
+            [disabled]="!canPurchase()">
+            Confirm purchase
+          </button>
+        </div>
+      </div>
+
+        <button
+            class="login-button"
+            *ngIf="!isUserLoggedIn()"
+            (click)="redirectToLogin()">
+              Login to purchase your tickets online
+            </button>
+        </div>
+
+        </div>
+      </div>
+    </div>

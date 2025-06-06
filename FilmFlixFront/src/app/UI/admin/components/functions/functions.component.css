@@ -1,0 +1,264 @@
+.container {
+      padding: 20px;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    h2 {
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      border-radius: 12px;
+      background: rgb(255, 254, 254);
+    }
+
+    .rooms-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+
+    .rooms-table th,
+    .rooms-table td {
+      padding: 16px 12px;
+      text-align: left;
+      border-bottom: 1px solid #bc1b1b;
+      vertical-align: middle;
+    }
+
+    .rooms-table th {
+      background: var(--primary-color, #000000);
+      color: white;
+      font-weight: 600;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .room-row:hover {
+      background-color: #f8f9ff;
+    }
+
+    .room-imagen {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 3px solid #ddd;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .room-nombre {
+      font-weight: 600;
+      color: #333;
+      font-size: 16px;
+      min-width: 150px;
+    }
+
+    .horario-cell {
+      min-width: 180px;
+      text-align: center;
+    }
+
+    .funcion-existente {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pelicula-asignada {
+      background: #e8f5e8;
+      border: 2px solid #4caf50;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      width: 100%;
+      max-width: 160px;
+    }
+
+    .pelicula-nombre {
+      display: block;
+      font-weight: 500;
+      color: #2e7d32;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .badge-asignada {
+      background: #4caf50;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .select-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .pelicula-select {
+      width: 100%;
+      max-width: 160px;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pelicula-select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .pelicula-select:hover {
+      border-color: #999;
+    }
+
+    .btn-guardar {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+      min-width: 100px;
+    }
+
+    .btn-guardar:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-guardar:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .loading {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .loading::after {
+      content: '';
+      width: 14px;
+      height: 14px;
+      border: 2px solid #ffffff;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .mensaje-exito {
+      background: #d4edda;
+      color: #155724;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border: 1px solid #c3e6cb;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .mensaje-error {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border: 1px solid #f5c6cb;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .leyenda {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+    }
+
+    .leyenda h3 {
+      margin: 0 0 15px 0;
+      color: #495057;
+      font-size: 16px;
+    }
+
+    .leyenda-items {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .leyenda-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #6c757d;
+    }
+
+    .leyenda-item select {
+      font-size: 12px;
+      padding: 2px 4px;
+    }
+
+    @media (max-width: 1200px) {
+      .rooms-table th,
+      .rooms-table td {
+        padding: 12px 8px;
+      }
+
+      .pelicula-select {
+        max-width: 140px;
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+
+      .rooms-table th,
+      .rooms-table td {
+        padding: 8px 6px;
+      }
+
+      .room-imagen {
+        width: 60px;
+        height: 60px;
+      }
+
+      .pelicula-select {
+        max-width: 120px;
+        font-size: 12px;
+      }
+
+      .btn-guardar {
+        padding: 8px 12px;
+        font-size: 12px;
+        min-width: 80px;
+      }
+    }

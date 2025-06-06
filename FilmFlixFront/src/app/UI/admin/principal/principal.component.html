@@ -1,0 +1,21 @@
+<div class="principal-container">
+
+    <div class="navbar row align-items-center">
+      <div class="col-1/2 d-flex align-items-center gap-3">
+        <img class="logo" src="/netflix.png" alt="netflix.png">
+        <button class="btn btn-danger btn-sm px-2 py-2 d-flex align-items-center gap-1 mb-2" (click)="logOut()" style="font-size: 0.8rem;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-door-closed-fill" viewBox="0 0 16 16">
+            <path d="M12 1a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2a1 1 0 0 1 1-1h8zm-2 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+          </svg>
+          <span>Log Out</span>
+        </button>
+      </div>
+    </div>
+
+
+    <div class="contenedor-principal">
+        <app-films class="film-container"></app-films>
+        <app-functions></app-functions>
+        <app-users></app-users>
+    </div>
+</div>

@@ -1,0 +1,221 @@
+<div class="user-tickets-container">
+      <!-- Header -->
+      <div class="header">
+        <div class="header-content">
+          <div class="header-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div class="header-text">
+            <h1>Users & Tickets Management</h1>
+            <p>Manage users and view their ticket purchases</p>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat-card">
+            <span class="stat-number">{{ totalUsers }}</span>
+            <span class="stat-label">Total Users</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">{{ totalTickets }}</span>
+            <span class="stat-label">Total Tickets</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search and Filters -->
+      <div class="filters">
+        <div class="search-container">
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input
+            type="text"
+            placeholder="Search users..."
+            [(ngModel)]="searchTerm"
+            (input)="filterUsers()"
+            class="search-input">
+        </div>
+        <div class="filter-buttons">
+          <button
+            class="filter-btn"
+            [class.active]="selectedRole === 'all'"
+            (click)="filterByRole('all')">
+            All Users
+          </button>
+          <button
+            class="filter-btn"
+            [class.active]="selectedRole === 'admin'"
+            (click)="filterByRole('admin')">
+            Admins
+          </button>
+          <button
+            class="filter-btn"
+            [class.active]="selectedRole === 'user'"
+            (click)="filterByRole('user')">
+            Customers
+          </button>
+        </div>
+      </div>
+
+      <!-- Users List -->
+      <div class="users-grid">
+        <div
+          *ngFor="let user of filteredUsers; trackBy: trackByUserId"
+          class="user-card"
+          [@slideIn]>
+
+          <!-- User Header -->
+          <div class="user-header" (click)="toggleUserExpanded(user.id)">
+            <div class="user-info">
+              <div class="user-avatar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
+              <div class="user-details">
+                <h3>{{ user.name }} {{ user.lastName }}</h3>
+                <div class="user-meta">
+                  <span class="role-badge" [ngClass]="getRoleClass(user.role)">
+                    {{ user.role | titlecase }}
+                  </span>
+                  <span class="status-badge" [ngClass]="user.enabled ? 'enabled' : 'disabled'">
+                    {{ user.enabled ? 'Active' : 'Inactive' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="user-actions">
+              <div class="ticket-count">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v2Z"/>
+                  <path d="M13 5v2"/>
+                  <path d="M13 17v2"/>
+                  <path d="M13 11v2"/>
+                </svg>
+                {{ getUserTicketCount(user.id) }} tickets
+              </div>
+              <svg
+                class="expand-icon"
+                [class.expanded]="isUserExpanded(user.id)"
+                width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6,9 12,15 18,9"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Contact Info -->
+          <div class="contact-info">
+            <div class="contact-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <span>{{ user.email }}</span>
+            </div>
+            <div class="contact-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <span>{{ user.phoneNumber }}</span>
+            </div>
+          </div>
+
+          <!-- Tickets Section -->
+          <div
+            class="tickets-section"
+            [class.expanded]="isUserExpanded(user.id)"
+            [@expandCollapse]="isUserExpanded(user.id) ? 'expanded' : 'collapsed'"
+            *ngIf="users.length > 0 && tickets.length > 0">
+
+            <div class="tickets-header">
+              <h4 class="ml-2">Purchase History</h4>
+              <span class="total-spent">
+                Total: ${{ getUserTotalSpent(user.id) | number:'1.2-2' }}
+              </span>
+            </div>
+
+            <div class="tickets-list">
+              <div
+                *ngFor="let ticket of getUserTickets(user.id); trackBy: trackByTicketId"
+                class="ticket-item">
+
+                <div class="ticket-main">
+                  <div class="movie-info">
+                    <div class="movie-poster">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect width="20" height="15" x="2" y="3" rx="2" ry="2"/>
+                        <circle cx="8" cy="9" r="2"/>
+                        <path d="m9 12 5 3-5 3v-6Z"/>
+                      </svg>
+                    </div>
+                    <div class="movie-details">
+                      <h5>{{ ticket.film.title }}</h5>
+                      <span class="genre">{{ ticket.film.filmGenre }}</span>
+                    </div>
+                  </div>
+
+                  <div class="function-info">
+                    <div class="function-detail">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12,6 12,12 16,14"/>
+                      </svg>
+                      <span>{{ ticket.function.time }}</span>
+                    </div>
+                    <div class="function-detail">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                      </svg>
+                      <span>{{ ticket.function.room.name }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ticket-details">
+                  <div class="ticket-meta">
+                    <span class="date">{{ formatDate(ticket.date) }}</span>
+                    <span class="payment-method" [ngClass]="getPaymentMethodClass(ticket.paymentMethod)">
+                      {{ formatPaymentMethod(ticket.paymentMethod) }}
+                    </span>
+                  </div>
+                  <div class="ticket-pricing">
+                    <span class="quantity">{{ ticket.quantity }}x</span>
+                    <span class="total">${{ ticket.total | number:'1.2-2' }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="getUserTickets(user.id).length === 0" class="no-tickets">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                  <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v2Z"/>
+                  <path d="M13 5v2"/>
+                  <path d="M13 17v2"/>
+                  <path d="M13 11v2"/>
+                </svg>
+                <p>No tickets purchased yet</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="filteredUsers.length === 0" class="empty-state">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <h3>No users found</h3>
+        <p>Try adjusting your search criteria</p>
+      </div>
+    </div>

@@ -1,0 +1,51 @@
+<div class="movies-container">
+      <div class="movies-grid">
+        <div
+          *ngFor="let movie of movies"
+          class="movie-card"
+          (click)="navigateToMovie(movie)"
+          [class.disabled]="!movie.enabled">
+
+          <div class="movie-poster">
+            <img
+              [src]="movie.posterUrl"
+              [alt]="movie.title"
+              (error)="onImageError($event)"
+              loading="lazy">
+
+            <div class="movie-overlay">
+              <div class="movie-info">
+                <h3 class="movie-title">{{ movie.title }}</h3>
+                <p class="movie-genre">{{ movie.filmGenre }}</p>
+                <p class="movie-duration">{{ movie.duration }}</p>
+
+                <div class="movie-actions">
+                  <button
+                    class="btn-primary"
+                    (click)="navigateToMovie(movie); $event.stopPropagation()">
+                    Ver Detalles
+                  </button>
+                  <a
+                    [href]="movie.trailerUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn-secondary"
+                    (click)="$event.stopPropagation()">
+                    Ver Tráiler
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="movie-details">
+            <h4 class="movie-title-bottom">{{ movie.title }}</h4>
+            <p class="movie-genre-bottom">{{ movie.filmGenre }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="movies.length === 0" class="no-movies">
+        <p>No hay películas disponibles</p>
+      </div>
+    </div>
